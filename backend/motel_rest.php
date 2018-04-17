@@ -3,7 +3,7 @@ header("Content-Type: text/javascript");
 error_reporting(0);
 require_once('rmDbConfig.php');
 // date_default_timezone_set('America/La_Paz');
-
+header('Access-Control-Allow-Origin: *');  
 // print_r($_REQUEST);
 switch ($_REQUEST["task"]) {
 

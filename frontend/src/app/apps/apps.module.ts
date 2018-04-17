@@ -11,11 +11,13 @@ import { AppsRoutes } from './apps.routing';
 import { EmailComponent } from './email/email.component';
 import { TaskboardComponent } from './taskboard/taskboard.component';
 import { FullcalendarComponent } from './fullcalendar/fullcalendar.component';
+import { HttpModule,JsonpModule, Jsonp, Response } from '@angular/http';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+	HttpModule, JsonpModule,
     NgbModalModule.forRoot(),
     CalendarModule.forRoot(),
     QuillModule,
