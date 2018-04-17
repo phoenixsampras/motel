@@ -77,3 +77,10 @@ p {
   background-image: url("../images/door_closed.png");
   background-size: contain;
 }
+
+.puerta_abierta {
+  width:140px;
+  height: 140px;
+  background-image: url("../images/door_open.png");
+  background-size: contain;
+}
