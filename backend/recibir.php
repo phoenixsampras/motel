@@ -1,0 +1,147 @@
+<?php
+header("Content-Type: text/javascript");
+error_reporting(0);
+require_once('rmDbConfig.php');
+// date_default_timezone_set('America/La_Paz');
+
+// print_r($_REQUEST);
+switch ($_REQUEST["task"]) {
+
+  case 'verLecturas':
+    // rmTipoCliente($db);
+  break;
+
+  default:
+    recibir($db);
+
+}
+
+function recibir($db) {
+  echo "recibir";
+  $rm_timestamp_unix =   $_POST["tiempo_unix"];
+  $rm_puerto_a =   $_POST["puerto_a"];
+  $rm_puerto_c =   $_POST["puerto_c"];
+  $rm_puerto_f =   $_POST["puerto_f"];
+  $rm_puerto_k =   $_POST["puerto_k"];
+
+  $data =  $rm_timestamp_unix . ',' . $rm_puerto_a . ',' . $rm_puerto_c . ',' . $rm_puerto_f . ',' . $rm_puerto_k ."\n";
+
+
+  $rm_puerto_a_bin = decbin($rm_puerto_a);
+  $rm_puerto_c_bin = decbin($rm_puerto_c);
+  $rm_puerto_f_bin = decbin($rm_puerto_f);
+  $rm_puerto_k_bin = decbin($rm_puerto_k);
+
+  $rm_puerto_a_puertas = str_split($rm_puerto_a_bin);
+  $rm_puerto_c_puertas = str_split($rm_puerto_c_bin);
+  $rm_puerto_f_puertas = str_split($rm_puerto_f_bin);
+  $rm_puerto_k_puertas = str_split($rm_puerto_k_bin);
+
+  $rm_timestamp = date('Y-m-d H:i:s.u',$rm_timestamp_unix);
+  $rm_timestamp_log = date('d-m-Y H:i:s.u',$rm_timestamp_unix);
+
+  try {
+    $sql = "
+    INSERT INTO rm_arduino (
+      rm_timestamp,
+      rm_puerto_a,
+      rm_puerto_c,
+      rm_puerto_f,
+      rm_puerto_k,
+      rm_puerta1,
+      rm_puerta2,
+      rm_puerta3,
+      rm_puerta4,
+      rm_puerta5,
+      rm_puerta6,
+      rm_puerta7,
+      rm_puerta8,
+      rm_puerta9,
+      rm_puerta10,
+      rm_puerta11,
+      rm_puerta12,
+      rm_puerta13,
+      rm_puerta14,
+      rm_puerta15,
+      rm_puerta16,
+      rm_puerta17,
+      rm_puerta18,
+      rm_puerta19,
+      rm_puerta20,
+      rm_puerta21,
+      rm_puerta22,
+      rm_puerta23,
+      rm_puerta24,
+      rm_puerta25,
+      rm_puerta26
+    ) VALUES
+    (
+      '$rm_timestamp',
+      $rm_puerto_a,
+      $rm_puerto_c,
+      $rm_puerto_f,
+      $rm_puerto_k,
+      '$rm_puerto_a_puertas[7]',
+      '$rm_puerto_a_puertas[6]',
+      '$rm_puerto_a_puertas[5]',
+      '$rm_puerto_a_puertas[4]',
+      '$rm_puerto_a_puertas[3]',
+      '$rm_puerto_a_puertas[2]',
+      '$rm_puerto_a_puertas[1]',
+      '$rm_puerto_a_puertas[0]',
+      '$rm_puerto_c_puertas[7]',
+      '$rm_puerto_c_puertas[6]',
+      '$rm_puerto_c_puertas[5]',
+      '$rm_puerto_c_puertas[4]',
+      '$rm_puerto_c_puertas[3]',
+      '$rm_puerto_c_puertas[2]',
+      '$rm_puerto_c_puertas[1]',
+      '$rm_puerto_c_puertas[0]',
+      '$rm_puerto_f_puertas[7]',
+      '$rm_puerto_f_puertas[6]',
+      '$rm_puerto_f_puertas[5]',
+      '$rm_puerto_f_puertas[4]',
+      '$rm_puerto_f_puertas[3]',
+      '$rm_puerto_f_puertas[2]',
+      '$rm_puerto_f_puertas[1]',
+      '$rm_puerto_f_puertas[0]',
+      '$rm_puerto_k_puertas[7]',
+      '$rm_puerto_k_puertas[6]'
+    ) RETURNING id;
+    ";
+
+    $file =  './datos_recibidos.txt';
+    $bits = $rm_timestamp_log . " - BITS Puerto a:" . json_encode($rm_puerto_a_puertas) . " Puerto c:" . json_encode($rm_puerto_c_puertas) . " Puerto f:" . json_encode($rm_puerto_f_puertas) . " Puerto k:" . json_encode($rm_puerto_k_puertas) . " \n";
+    file_put_contents($file, $data, FILE_APPEND | LOCK_EX);
+
+    // file_put_contents($file, $sql, FILE_APPEND | LOCK_EX);
+    file_put_contents($file, $bits, FILE_APPEND | LOCK_EX);
+    // file_put_contents($file, $_REQUEST[], FILE_APPEND | LOCK_EX);
+
+    if(!$db){
+      file_put_contents($file, "Error : Unable to open database \n" , FILE_APPEND | LOCK_EX);
+    } else {
+      $query = pg_query($db, $sql);
+      if(!$query){
+        file_put_contents($file, pg_last_error($db) , FILE_APPEND | LOCK_EX);
+        // echo "Error".pg_last_error($db);
+        exit;
+      } else {
+        $resultado = pg_fetch_all($query);
+        file_put_contents($file, "Grabado en DB id: " . $resultado[0]['id'] . " \n", FILE_APPEND | LOCK_EX);
+      }
+    }
+
+
+
+
+    // echo $_GET['callback'].'({"rmDatosIncsertados": ' . json_encode($resultado) . '})';
+    pg_close($db);
+
+  } catch(PDOException $e) {
+      echo $_GET['callback'].'({"error":{"text":'. pg_last_error($db) .'}})';
+      exit;
+  }
+
+}
+?>
