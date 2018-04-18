@@ -32,7 +32,7 @@ export class Dashboard1Component {
 				this.rooms.push({'id' : keys[i], 'status' : res[keys[i]]});
 			}
 			console.log(this.rooms);
-			let time = this.timeout * 1000;
+			let time = parseInt(this.timeout, 10) * 1000;
 			let me = this;
 			setTimeout(function(){
 				me.loadRooms();
