@@ -34,8 +34,8 @@
 				<div class="soc-content">
 
 					<div class="col-3 b-r">
-						<button *ngIf="room.status == 't'" [disabled]="room.status == 't' ? false : true" (click)="checkButton(room.id)" class="btn btn-circle btn-danger" type="button">O</button>
-						<button *ngIf="room.status == 'f'" [disabled]="room.status == 't' ? false : true" (click)="checkButton(room.id)" class="btn btn-circle btn-info" type="button">O</button>
+						<button *ngIf="room.status == 't'" (click)="checkButton(room.id)" class="btn btn-circle btn-danger" type="button">O</button>
+						<button *ngIf="room.status == 'f'" (click)="checkButton(room.id)" class="btn btn-circle btn-info" type="button">O</button>
 					
 					</div>
 					<div class="col-3 b-r">
