@@ -34,16 +34,18 @@
 				<div class="soc-content">
 
 					<div class="col-3 b-r">
-						<button (click)="checkButton(room.id)" class="btn btn-info btn-circle" type="button"><i class="fa fa-check"></i> </button>
+						<button *ngIf="room.status == 't'" [disabled]="room.status == 't' ? false : true" (click)="checkButton(room.id)" class="btn btn-circle btn-danger" type="button">O</button>
+						<button *ngIf="room.status == 'f'" [disabled]="room.status == 't' ? false : true" (click)="checkButton(room.id)" class="btn btn-circle btn-info" type="button">O</button>
+					
 					</div>
 					<div class="col-3 b-r">
-						<button (click)="cancelButton(room.id)" class="btn btn-danger btn-circle" type="button"><i class="fa fa-times"></i> </button>
+						<button [disabled]="room.status == 't' ? true : false" (click)="cancelButton(room.id)" class="btn btn-default btn-circle" type="button">E</button>
 					</div>
 					<div class="col-3 b-r">
-						<button (click)="favouriteButton(room.id)" class="btn btn-warning btn-circle" type="button"><i class="fa fa-heart"></i> </button>
+						<button [disabled]="room.status == 't' ? true : false" (click)="favouriteButton(room.id)" class="btn btn-success btn-circle" type="button">C</button>
 					</div>
 					<div class="col-3 b-r">
-						<button (click)="fourthButton(room.id)" class="btn btn-success btn-circle" type="button"><i class="fa fa-user"></i> </button>
+						<button (click)="fourthButton(room.id)" class="btn btn-warning btn-circle" type="button">S</button>
 					</div>
 				</div>
 			</div>
