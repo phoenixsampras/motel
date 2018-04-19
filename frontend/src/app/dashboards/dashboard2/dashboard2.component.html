@@ -27,23 +27,20 @@
 					<img class="card-img-top img-responsive" *ngIf="room.door == 'f'" src="assets/images/door_open.png" alt="Door Closed" />
 					<div class='row'>
 						<div class="col-12 b-r">
-							<h3 class="font-medium">Habitacion {{room.state}}</h3>
+							<h3 class="font-medium">Habitacion {{room.id}}</h3>
 						</div>
 					</div>
 					<div class='row'>
 						<div class="col-9">
 							<div class="btn-group" data-toggle="buttons">
-								<label *ngIf="room.state == 1" class="btn btn-danger active">
-									<input (click)="emptyButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option1" autocomplete="off" checked> Occupied
+								<label class="btn {{room.state == 1 ? 'btn-danger active' : 'btn-secondary '}} ">
+									<input (click)="occupyButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option1" autocomplete="off" [checked] = "room.state == 1"> Occupied
 								</label>
-								<label *ngIf="room.state == 0" class="btn btn-info">
-									<input (click)="occupyButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option4" autocomplete="off"> Occupied
+								<label class="btn {{room.state == 0 ? 'btn-success' : 'btn-secondary'}}">
+									<input (click)="emptyButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option2" [checked] = "room.state == 0" autocomplete="off"> Empty
 								</label>
-								<label class="btn btn-secondary">
-									<input type="radio" name="room-options-{{room.id}}" id="option2" autocomplete="off"> Empty
-								</label>
-								<label class="btn btn-success">
-									<input type="radio" name="room-options-{{room.id}}" id="option3" autocomplete="off"> Cleaning
+								<label class="btn {{room.state == 2 ? 'btn-primary' : 'btn-secondary'}}">
+									<input (click)="cleanButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option3" autocomplete="off" [checked] = "room.state == 2"> Cleaning
 								</label>
 							</div>
 						</div>

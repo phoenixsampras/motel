@@ -12,7 +12,7 @@ import { Room } from '../../room';
 export class Dashboard2Component {
 	rooms:any = [];
 	timeout:string = "60";
-	timeoutArray = ['1', '5', '60'];
+	timeoutArray = ['60', '5', '60'];
 	constructor(public jsonp:Jsonp) {
 		this.loadRooms();
 	}
@@ -31,18 +31,19 @@ export class Dashboard2Component {
 				//this.rooms.push({'id' : keys[i], 'status' : res[keys[i]]});
 				localStorage.removeItem(roomStr);
 				let room = localStorage.getItem(roomStr);
-				
+				console.log(room);
 				if(!room) {
 					let r = new Room;
 					r.id = parseInt(keys[i],10);
 					r.state = res[keys[i]] == "f" ? 1 : 0;
 					r.door = res[keys[i]];
 					this.rooms.push(r);
-					
+					localStorage.setItem(roomStr, JSON.stringify(r));
 				} else {
+					
 					this.rooms.push(JSON.parse(localStorage.getItem(roomStr)));
 				}
-				//console.log(room);
+				
 			}
 			//console.log(this.rooms);
 			let time = parseInt(this.timeout, 10) * 1000;
@@ -55,15 +56,40 @@ export class Dashboard2Component {
 	}
 	
 	occupyButton(id) {
-		alert("Check Button Room " + id);
+		let roomStr = "Room-" + id;
+		let room = JSON.parse(localStorage.getItem(roomStr));
+		room.state = 1;
+		localStorage.setItem(roomStr, JSON.stringify(room));
+		for(var i=0;i<this.rooms.length;i++) {
+			if(this.rooms[i].id == room.id) {
+				this.rooms[i] = room;
+			}
+		}
 	}
 	
-	cancelButton(id) {
-		alert("Cancel Button Room " + id);
+	emptyButton(id) {
+		let roomStr = "Room-" + id;
+		let room = JSON.parse(localStorage.getItem(roomStr));
+		room.state = 0;
+		localStorage.setItem(roomStr, JSON.stringify(room));
+		for(var i=0;i<this.rooms.length;i++) {
+			if(this.rooms[i].id == room.id) {
+				this.rooms[i] = room;
+			}
+		}
+		console.log(localStorage.getItem(roomStr));
 	}
 	
-	favouriteButton(id) {
-		alert("Favourite Button Room " + id);
+	cleanButton(id) {
+		let roomStr = "Room-" + id;
+		let room = JSON.parse(localStorage.getItem(roomStr));
+		room.state = 2;
+		localStorage.setItem(roomStr, JSON.stringify(room));
+		for(var i=0;i<this.rooms.length;i++) {
+			if(this.rooms[i].id == room.id) {
+				this.rooms[i] = room;
+			}
+		}
 	}
 	
 	fourthButton(id) {
