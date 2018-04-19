@@ -11,8 +11,8 @@ import { Room } from '../../room';
 })
 export class Dashboard2Component {
 	rooms:any = [];
-	timeout:string = "60";
-	timeoutArray = ['60', '5', '60'];
+	timeout:string = "1";
+	timeoutArray = ['1', '5', '60'];
 	constructor(public jsonp:Jsonp) {
 		this.loadRooms();
 	}

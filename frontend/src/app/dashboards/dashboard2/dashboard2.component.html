@@ -23,8 +23,8 @@
         <div class="card">
 			<div class="social-widget">
 				<div class="soc-header" styke="height:64px">
-					<img class="card-img-top img-responsive" *ngIf="room.door == 't'" src="assets/images/door_closed.png" alt="Door Closed" />
-					<img class="card-img-top img-responsive" *ngIf="room.door == 'f'" src="assets/images/door_open.png" alt="Door Closed" />
+					<img class="card-img-top img-responsive" *ngIf="room.state == 1" src="assets/images/door_closed.png" alt="Door Closed" />
+					<img class="card-img-top img-responsive" *ngIf="room.door != 1" src="assets/images/door_open.png" alt="Door Closed" />
 					<div class='row'>
 						<div class="col-12 b-r">
 							<h3 class="font-medium">Habitacion {{room.id}}</h3>
