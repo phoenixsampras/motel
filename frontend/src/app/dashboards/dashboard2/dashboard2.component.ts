@@ -29,9 +29,9 @@ export class Dashboard2Component {
 				//console.log(res[keys[i]);
 				let roomStr = "Room-" + keys[i];
 				//this.rooms.push({'id' : keys[i], 'status' : res[keys[i]]});
-				localStorage.removeItem(roomStr);
+				
 				let room = localStorage.getItem(roomStr);
-				console.log(room);
+				console.log(roomStr +  ' -- ' + room);
 				if(!room) {
 					let r = new Room;
 					r.id = parseInt(keys[i],10);
@@ -39,6 +39,7 @@ export class Dashboard2Component {
 					r.door = res[keys[i]];
 					this.rooms.push(r);
 					localStorage.setItem(roomStr, JSON.stringify(r));
+					
 				} else {
 					
 					this.rooms.push(JSON.parse(localStorage.getItem(roomStr)));

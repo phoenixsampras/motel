@@ -63,11 +63,10 @@ CREATE TABLE "public"."rm_arduino" (
   "rm_puerta23" bool  DEFAULT NULL,
   "rm_puerta24" bool  DEFAULT NULL,
   "rm_puerta25" bool  DEFAULT NULL,
-  "rm_puerta26" bool  DEFAULT NULL
+  "rm_puerta26" bool  DEFAULT NULL,
+  "rm_log" text COLLATE "pg_catalog"."default" DEFAULT NULL
 )
 ;
-
-2018-04-16 11:49:16.000000
 
 -- ----------------------------
 -- Alter sequences owned by

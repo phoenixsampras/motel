@@ -3,7 +3,7 @@
   // $host        = "host=192.168.1.159";
   $host        = "host=74.50.117.68";
   $port        = "port=5435";
-  $dbname      = "dbname=ORGANICA";
+  $dbname      = "dbname=motel";
   $credentials = "user=odoo password=Desys3UGQFNK6pB";
 
   $db = pg_connect( "$host $port $dbname $credentials"  );

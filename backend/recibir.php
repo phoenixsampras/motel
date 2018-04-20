@@ -24,21 +24,29 @@ function recibir($db) {
   $rm_puerto_f =   $_POST["puerto_f"];
   $rm_puerto_k =   $_POST["puerto_k"];
 
-  $data =  $rm_timestamp_unix . ',' . $rm_puerto_a . ',' . $rm_puerto_c . ',' . $rm_puerto_f . ',' . $rm_puerto_k ."\n";
+  $data =  $rm_timestamp_unix . ',' . $rm_puerto_a . ',' . $rm_puerto_c . ',' . $rm_puerto_f . ',' . $rm_puerto_k;
 
-
-  $rm_puerto_a_bin = decbin($rm_puerto_a);
-  $rm_puerto_c_bin = decbin($rm_puerto_c);
-  $rm_puerto_f_bin = decbin($rm_puerto_f);
-  $rm_puerto_k_bin = decbin($rm_puerto_k);
+  $rm_puerto_a_bin = sprintf( "%08d", decbin($rm_puerto_a));
+  $rm_puerto_c_bin = sprintf( "%08d", decbin($rm_puerto_c));
+  $rm_puerto_f_bin = sprintf( "%08d", decbin($rm_puerto_f));
+  $rm_puerto_k_bin = sprintf( "%08d", decbin($rm_puerto_k));
 
   $rm_puerto_a_puertas = str_split($rm_puerto_a_bin);
   $rm_puerto_c_puertas = str_split($rm_puerto_c_bin);
   $rm_puerto_f_puertas = str_split($rm_puerto_f_bin);
   $rm_puerto_k_puertas = str_split($rm_puerto_k_bin);
 
+  $rm_puerto_a_puertas_log = array_reverse(str_split($rm_puerto_a_bin));
+  $rm_puerto_c_puertas_log = array_reverse(str_split($rm_puerto_c_bin));
+  $rm_puerto_f_puertas_log = array_reverse(str_split($rm_puerto_f_bin));
+  $rm_puerto_k_puertas_log = array_reverse(str_split($rm_puerto_k_bin));
+
   $rm_timestamp = date('Y-m-d H:i:s.u',$rm_timestamp_unix);
   $rm_timestamp_log = date('d-m-Y H:i:s.u',$rm_timestamp_unix);
+
+  $file =  './datos_recibidos.txt';
+  $logs = $rm_timestamp_log . " - Datos Recibidos: " . $data . " - BITS Puerto a:" . json_encode($rm_puerto_a_puertas_log) . " Puerto c:" . json_encode($rm_puerto_c_puertas_log) . " Puerto f:" . json_encode($rm_puerto_f_puertas_log) . " Puerto k:" . json_encode($rm_puerto_k_puertas_log) . " \n";
+  file_put_contents($file, $logs, FILE_APPEND | LOCK_EX);
 
   try {
     $sql = "
@@ -73,7 +81,8 @@ function recibir($db) {
       rm_puerta23,
       rm_puerta24,
       rm_puerta25,
-      rm_puerta26
+      rm_puerta26,
+      rm_log
     ) VALUES
     (
       '$rm_timestamp',
@@ -106,16 +115,14 @@ function recibir($db) {
       '$rm_puerto_f_puertas[1]',
       '$rm_puerto_f_puertas[0]',
       '$rm_puerto_k_puertas[7]',
-      '$rm_puerto_k_puertas[6]'
+      '$rm_puerto_k_puertas[6]',
+      '$logs'
     ) RETURNING id;
     ";
 
-    $file =  './datos_recibidos.txt';
-    $bits = $rm_timestamp_log . " - BITS Puerto a:" . json_encode($rm_puerto_a_puertas) . " Puerto c:" . json_encode($rm_puerto_c_puertas) . " Puerto f:" . json_encode($rm_puerto_f_puertas) . " Puerto k:" . json_encode($rm_puerto_k_puertas) . " \n";
-    file_put_contents($file, $data, FILE_APPEND | LOCK_EX);
+
 
     // file_put_contents($file, $sql, FILE_APPEND | LOCK_EX);
-    file_put_contents($file, $bits, FILE_APPEND | LOCK_EX);
     // file_put_contents($file, $_REQUEST[], FILE_APPEND | LOCK_EX);
 
     if(!$db){
