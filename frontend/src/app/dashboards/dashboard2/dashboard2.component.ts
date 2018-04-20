@@ -42,7 +42,13 @@ export class Dashboard2Component {
 					
 				} else {
 					
-					this.rooms.push(JSON.parse(localStorage.getItem(roomStr)));
+					var _r = JSON.parse(localStorage.getItem(roomStr));
+					if(_r.state == 0) {
+						_r.state = res[keys[i]] == "f" ? 1 : 0;
+						_r.door = res[keys[i]];
+						localStorage.setItem(roomStr, JSON.stringify(_r));
+					}
+					this.rooms.push(_r);
 				}
 				
 			}
