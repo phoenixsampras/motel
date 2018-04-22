@@ -6,10 +6,10 @@
 		<div class='card'>
 			<div class='card-body'>
 				<div class="form-group row">
-					<label for="example-month-input" class="col-2 col-form-label">Refresh</label>
+					<label for="example-month-input" class="col-2 col-form-label">Refrescar</label>
 					 <div class="col-10">
 						<select class="custom-select col-12" ng-model="timeout">
-							 <option *ngFor="let arr of timeoutArray" value="{{arr}}">{{arr}} Seconds</option>
+							 <option *ngFor="let arr of timeoutArray" value="{{arr}}">{{arr}} Segundos</option>
 						</select>
 					</div>
 				</div>
@@ -19,7 +19,7 @@
 </div>
 <div class="row" >
     <!-- Column -->
-    <div class="col-lg-6 col-md-6" *ngFor="let room of rooms">
+    <div class="col-lg-2 col-md-2" *ngFor="let room of rooms">
         <div class="card">
 			<div class="social-widget">
 				<div class="soc-header" styke="height:64px">
@@ -34,22 +34,22 @@
 						<div class="col-9">
 							<div class="btn-group" data-toggle="buttons">
 								<label class="btn {{room.state == 1 ? 'btn-danger active' : 'btn-secondary '}} ">
-									<input (click)="occupyButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option1" autocomplete="off" [checked] = "room.state == 1"> Occupied
+									<input (click)="occupyButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option1" autocomplete="off" [checked] = "room.state == 1">O
 								</label>
 								<label class="btn {{room.state == 0 ? 'btn-success' : 'btn-secondary'}}">
-									<input (click)="emptyButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option2" [checked] = "room.state == 0" autocomplete="off"> Empty
+									<input (click)="emptyButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option2" [checked] = "room.state == 0" autocomplete="off">H
 								</label>
 								<label class="btn {{room.state == 2 ? 'btn-primary' : 'btn-secondary'}}">
-									<input (click)="cleanButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option3" autocomplete="off" [checked] = "room.state == 2"> Cleaning
+									<input (click)="cleanButton(room.id)" type="radio" name="room-options-{{room.id}}" id="option3" autocomplete="off" [checked] = "room.state == 2">L
 								</label>
 							</div>
 						</div>
 						<div class="col-3 b-r">
-							<button (click)="fourthButton(room.id)" class="btn btn-warning" type="button">Checkout</button>
+							<button (click)="fourthButton(room.id)" class="btn btn-warning" type="button">V</button>
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 		</div>
     </div>

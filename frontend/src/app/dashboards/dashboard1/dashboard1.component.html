@@ -6,10 +6,10 @@
 		<div class='card'>
 			<div class='card-body'>
 				<div class="form-group row">
-					<label for="example-month-input" class="col-2 col-form-label">Refresh</label>
+					<label for="example-month-input" class="col-2 col-form-label">Refrescar</label>
 					 <div class="col-10">
 						<select class="custom-select col-12" ng-model="timeout">
-							 <option *ngFor="let arr of timeoutArray" value="{{arr}}">{{arr}} Seconds</option>
+							 <option *ngFor="let arr of timeoutArray" value="{{arr}}">{{arr}} Segundos</option>
 						</select>
 					</div>
 				</div>
@@ -19,7 +19,7 @@
 </div>
 <div class="row" >
     <!-- Column -->
-    <div class="col-lg-3 col-md-3" *ngFor="let room of rooms">
+    <div class="col-lg-2 col-md-2" *ngFor="let room of rooms">
         <div class="card">
 			<div class="social-widget">
 				<div class="soc-header" styke="height:64px">
@@ -31,12 +31,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="soc-content">
+				<!-- <div class="soc-content">
 
 					<div class="col-3 b-r">
 						<button *ngIf="room.status == 't'" (click)="checkButton(room.id)" class="btn btn-circle btn-danger" type="button">O</button>
 						<button *ngIf="room.status == 'f'" (click)="checkButton(room.id)" class="btn btn-circle btn-info" type="button">O</button>
-					
+
 					</div>
 					<div class="col-3 b-r">
 						<button [disabled]="room.status == 't' ? true : false" (click)="cancelButton(room.id)" class="btn btn-default btn-circle" type="button">E</button>
@@ -47,7 +47,7 @@
 					<div class="col-3 b-r">
 						<button (click)="fourthButton(room.id)" class="btn btn-warning btn-circle" type="button">S</button>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
     </div>

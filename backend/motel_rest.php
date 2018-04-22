@@ -15,6 +15,10 @@ switch ($_REQUEST["task"]) {
     verLogs($db);
   break;
 
+  case 'checkout':
+    checkout($db);
+  break;
+
   default:
     // recibir($db);
 
