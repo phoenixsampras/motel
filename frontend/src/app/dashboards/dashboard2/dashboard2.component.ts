@@ -99,8 +99,16 @@ export class Dashboard2Component {
 		}
 	}
 	
-	fourthButton(id) {
-		alert("Fourth Button Room " + id);
+	checkoutButton(id) {
+		let roomStr = "Room-" + id;
+		let room = JSON.parse(localStorage.getItem(roomStr));
+		room.state = 2;
+		localStorage.setItem(roomStr, JSON.stringify(room));
+		for(var i=0;i<this.rooms.length;i++) {
+			if(this.rooms[i].id == room.id) {
+				this.rooms[i] = room;
+			}
+		}
 	}
 
 }
