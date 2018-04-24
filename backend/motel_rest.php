@@ -1,10 +1,32 @@
 <?php
+
+// Expected URL
+// http://9.9.9.20/backend/motel_rest.php?task=checkout&product=1&quantity=2&price=3
+//
+
 header("Content-Type: text/javascript");
 header('Access-Control-Allow-Origin: *');
-error_reporting(0);
-require_once('rmDbConfig.php');
+error_reporting(1);
+
+require_once ('rmDbConfig.php');
+require_once ('rmOdooConfig.php');
+require_once ('xmlrpc_lib/ripcord.php');
+
+// if (isset($_SERVER['HTTP_ORIGIN'])) {
+//   header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+//   header('Access-Control-Allow-Credentials: true');
+//   header('Access-Control-Max-Age: 86400'); // cache for 1 day
+// }
+//
+// if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+//   if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+//   if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+//   exit(0);
+// }
+
 // date_default_timezone_set('America/La_Paz');
 // print_r($_REQUEST);
+
 switch ($_REQUEST["task"]) {
 
   case 'verPuertas':
@@ -16,8 +38,10 @@ switch ($_REQUEST["task"]) {
   break;
 
   case 'checkout':
-    checkout($db);
-  break;
+    rmRegistrarPedidoMasivo($data);
+
+  case 'login':
+    login($data);
 
   default:
     // recibir($db);
@@ -116,6 +140,133 @@ function verLogs($db) {
       echo $_GET['callback'].'({"error":{"text":'. pg_last_error($db) .'}})';
       exit;
   }
+}
+
+function rmRegistrarPedidoMasivo($conex, $user_id = '') {
+
+  $default_cliente = 45;
+  $default_usuario = 1;
+
+	$url = $conex['url'];
+	$db = $conex['db'];
+	$username = $conex['username'];
+	$password = $conex['password'];
+	// $postdata = file_get_contents("php://input");
+	// $jsondata = json_decode($postdata);
+
+	// print_r($jsondata);
+	// $rmUserId = intval($jsondata->rmUserId);
+	// $orderIds = [];
+
+	// $errors = [];
+	// for ($i = 0; $i < count($jsondata->pedidos); $i++) {
+	// $pedido = $jsondata->pedidos[$i];
+
+	// $rmCustomer = VerificarCliente($conex, $pedido->customerObj);
+
+	$rmDateOrder = date('Y-m-d H:i:s');
+	$rmNote = 'Hora de Ingreso';
+	// $latitude = $pedido->latitude;
+	// $longitude = $pedido->longitude;
+	// $numberOrder = $pedido->numberOrder;
+	// $selectedProducts = $pedido->selectedProducts;
+	$datosVenta = array(
+		array(
+			'user_id' => $default_usuario,
+			'partner_id' => $default_cliente,
+			'date_order' => $rmDateOrder,
+			'note' => $rmDateOrder,
+			// 'origin' => $numberOrder,
+      // 'user_id' => $rmUserId,
+			// 'partner_id' => intval($rmCustomer),
+			// 'date_order' => $rmDateOrder,
+			// 'note' => $rmNote,
+			// 'rm_latitude' => $latitude,
+			// 'rm_longitude' => $longitude,
+			// 'origin' => $numberOrder,
+		)
+	);
+	$uid = login($conex);
+	$models = ripcord::client("$url/xmlrpc/2/object");
+
+	$id = $models->execute_kw($db, $uid, $password, 'sale.order', 'create', $datosVenta);
+
+	if (Is_Numeric($id)) {
+		rmRegistrarLineaPedidoEmbeded($conex, $user_id, $_REQUEST['Products'], $id);
+		$orderIds[] = $id;
+	}
+	else {
+		$errors[] = $id;
+	}
+	// }
+
+	if (!empty($orderIds)) {
+		$resultado = json_encode($orderIds[0]);
+    echo $_GET['callback'].'({"order_id": '. $resultado . ',"status":"success"})';
+	}
+	else {
+		echo json_encode(["errors" => $errors, "status" => "error"]);
+	}
+}
+
+function rmRegistrarLineaPedidoEmbeded($conex, $user_id, $products, $order_id)
+{
+
+  // print_r ($_REQUEST);
+
+	$url = $conex['url'];
+	$db = $conex['db'];
+	$username = $conex['username'];
+	$password = $conex['password'];
+	$uid = login($conex);
+	$models = ripcord::client("$url/xmlrpc/2/object");
+	// foreach($products as $producto) {
+	$rmProduct_id = $_REQUEST['product'];
+	$rmQuantity = $_REQUEST['quantity'];
+	$order_id = $order_id;
+	$name = 'snu snu 2 horitas';
+	$price_unit = $_REQUEST['price'];
+	$datos = array(
+		array(
+			'order_id' => $order_id,
+			'product_id' => 2,
+			'name' => 'Snu Snu 2 horitas',
+			// 'price_unit' => $price_unit,
+			'product_uom_qty' => $rmQuantity,
+			'product_uom' => 1,
+			'route_id' => 3
+
+			// BUG ODOO !! no encuentra la ruta por defecto
+
+		)
+	);
+	$id = $models->execute_kw($db, $uid, $password, 'sale.order.line', 'create', $datos);
+	if (Is_Numeric($id)) {
+    return $id;
+		// echo $_GET['callback'].'({"orderline_id": '. $id . ',"status":"success"})';
+
+	}
+	else {
+		print_r($_REQUEST);
+		print_r($datos);
+		print_r($id);
+	}
+	// }
+}
+
+function login($conex)
+{
+
+  // print_r($conex);
+	$url = $conex['url'];
+	$db = $conex['db'];
+	$username = $conex['username'];
+	$password = $conex['password'];
+	$common = ripcord::client("$url/xmlrpc/2/common");
+  // print_r($common);
+	// Autenticarse
+
+	return $common->authenticate($db, $username, $password, array());
 }
 
 ?>

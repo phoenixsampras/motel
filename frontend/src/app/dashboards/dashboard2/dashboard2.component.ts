@@ -16,8 +16,7 @@ export class Dashboard2Component {
 	constructor(public jsonp:Jsonp) {
 		this.loadRooms();
 	}
-	
-	
+
 	loadRooms() {
 		this.jsonp.request("https://cloud.movilcrm.com/motel/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
 		.subscribe(response => {
@@ -29,9 +28,9 @@ export class Dashboard2Component {
 				//console.log(res[keys[i]);
 				let roomStr = "Room-" + keys[i];
 				//this.rooms.push({'id' : keys[i], 'status' : res[keys[i]]});
-				
+
 				let room = localStorage.getItem(roomStr);
-				console.log(roomStr +  ' -- ' + room);
+				// console.log(roomStr +  ' -- ' + room);
 				if(!room) {
 					let r = new Room;
 					r.id = parseInt(keys[i],10);
@@ -39,19 +38,19 @@ export class Dashboard2Component {
 					r.door = res[keys[i]];
 					this.rooms.push(r);
 					localStorage.setItem(roomStr, JSON.stringify(r));
-					
+
 				} else {
-					
+
 					var _r = JSON.parse(localStorage.getItem(roomStr));
 					if(_r.state == 0) {
 						_r.state = res[keys[i]] == "f" ? 1 : 0;
-						
+
 						localStorage.setItem(roomStr, JSON.stringify(_r));
 					}
 					_r.door = res[keys[i]];
 					this.rooms.push(_r);
 				}
-				
+
 			}
 			//console.log(this.rooms);
 			let time = parseInt(this.timeout, 10) * 1000;
@@ -60,9 +59,18 @@ export class Dashboard2Component {
 				me.loadRooms();
 			}, time);
 		});
-		
+
 	}
-	
+
+	sendRoomData() {
+		this.jsonp.request("http://9.9.9.20/backend/motel_rest.php?task=checkout&product=1&quantity=2&price=3&callback=JSONP_CALLBACK")
+		.subscribe(response => {
+			var res =response['_body'].order_id;
+			console.log((res));
+		});
+
+	}
+
 	occupyButton(id) {
 		let roomStr = "Room-" + id;
 		let room = JSON.parse(localStorage.getItem(roomStr));
@@ -74,7 +82,7 @@ export class Dashboard2Component {
 			}
 		}
 	}
-	
+
 	emptyButton(id) {
 		let roomStr = "Room-" + id;
 		let room = JSON.parse(localStorage.getItem(roomStr));
@@ -87,7 +95,7 @@ export class Dashboard2Component {
 		}
 		console.log(localStorage.getItem(roomStr));
 	}
-	
+
 	cleanButton(id) {
 		let roomStr = "Room-" + id;
 		let room = JSON.parse(localStorage.getItem(roomStr));
@@ -99,15 +107,20 @@ export class Dashboard2Component {
 			}
 		}
 	}
-	
+
 	checkoutButton(id) {
 		let roomStr = "Room-" + id;
 		let room = JSON.parse(localStorage.getItem(roomStr));
+		console.log(room);
 		room.state = 2;
 		localStorage.setItem(roomStr, JSON.stringify(room));
 		for(var i=0;i<this.rooms.length;i++) {
 			if(this.rooms[i].id == room.id) {
 				this.rooms[i] = room;
+				let newOrderID = this.sendRoomData();
+				window.open("http://9.9.9.20:8999/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=232", "_blank");
+
+				// $window.open('http://9.9.9.20:8999/web?#id=36&view_type=form&model=sale.order&action=232');
 			}
 		}
 	}
