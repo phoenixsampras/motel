@@ -165,7 +165,9 @@ function rmRegistrarPedidoMasivo($conex, $user_id = '') {
 	// $rmCustomer = VerificarCliente($conex, $pedido->customerObj);
 
 	$rmDateOrder = date('Y-m-d H:i:s');
-	$rmNote = 'Hora de Ingreso';
+  $rmNote = 'Hora de Ingreso: ' . $_REQUEST["startDateFormated"] . "\n";
+  $rmNote .= 'Hora de Salida: ' . $_REQUEST["endDateFormatted"] . "\n";
+	$rmNote .= 'Habitacion Nro: ' . $_REQUEST["roomID"];
 	// $latitude = $pedido->latitude;
 	// $longitude = $pedido->longitude;
 	// $numberOrder = $pedido->numberOrder;
@@ -175,7 +177,7 @@ function rmRegistrarPedidoMasivo($conex, $user_id = '') {
 			'user_id' => $default_usuario,
 			'partner_id' => $default_cliente,
 			'date_order' => $rmDateOrder,
-			'note' => $rmDateOrder,
+			'note' => $rmNote,
 			// 'origin' => $numberOrder,
       // 'user_id' => $rmUserId,
 			// 'partner_id' => intval($rmCustomer),
@@ -186,6 +188,8 @@ function rmRegistrarPedidoMasivo($conex, $user_id = '') {
 			// 'origin' => $numberOrder,
 		)
 	);
+
+  // print_r($datosVenta);
 	$uid = login($conex);
 	$models = ripcord::client("$url/xmlrpc/2/object");
 

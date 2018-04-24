@@ -4,6 +4,7 @@ import { Http, Jsonp } from '@angular/http';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import { Room } from '../../room';
+import * as moment from 'moment';
 
 @Component({
 	templateUrl: './dashboard2.component.html',
@@ -62,19 +63,22 @@ export class Dashboard2Component {
 
 	}
 
-	sendRoomData() {
-		this.jsonp.request("http://9.9.9.20/backend/motel_rest.php?task=checkout&product=1&quantity=2&price=3&callback=JSONP_CALLBACK")
+	sendRoomData(hours, startDateFormated, endDateFormatted, roomID) {
+		let url = "http://9.9.9.20/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated + "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
+		this.jsonp.request(encodeURI(url))
 		.subscribe(response => {
 			var res =response['_body'].order_id;
 			console.log((res));
 		});
-
 	}
 
 	occupyButton(id) {
 		let roomStr = "Room-" + id;
 		let room = JSON.parse(localStorage.getItem(roomStr));
 		room.state = 1;
+		let rightNow = moment().format();
+		room.startDate = rightNow;
+		console.log((room));
 		localStorage.setItem(roomStr, JSON.stringify(room));
 		for(var i=0;i<this.rooms.length;i++) {
 			if(this.rooms[i].id == room.id) {
@@ -112,15 +116,30 @@ export class Dashboard2Component {
 		let roomStr = "Room-" + id;
 		let room = JSON.parse(localStorage.getItem(roomStr));
 		console.log(room);
+		let startDate = room.startDate;
+		let endDate = moment(new Date());
+		// let timeConsumed = endDate.diff(moment(room.startDate), 'hours');
+		let duration = moment.duration(endDate.diff(startDate));
+		let hours = parseInt(duration.minutes()) / 60;
+
+		let startDateFormated = moment(startDate).format("D/MM/YYYY, h:mm:ss a");
+		let endDateFormatted = moment(endDate).format("D/MM/YYYY, h:mm:ss a");
+
+		console.log(startDate);
+		console.log(endDate);
+		console.log(duration.minutes());
+		console.log(hours);
+		console.log(startDateFormated);
+		console.log(endDateFormatted);
+
 		room.state = 2;
 		localStorage.setItem(roomStr, JSON.stringify(room));
 		for(var i=0;i<this.rooms.length;i++) {
 			if(this.rooms[i].id == room.id) {
 				this.rooms[i] = room;
-				let newOrderID = this.sendRoomData();
+				let newOrderID = this.sendRoomData(hours, startDateFormated, endDateFormatted, room.id);
 				window.open("http://9.9.9.20:8999/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=232", "_blank");
 
-				// $window.open('http://9.9.9.20:8999/web?#id=36&view_type=form&model=sale.order&action=232');
 			}
 		}
 	}
