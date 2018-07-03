@@ -68,7 +68,7 @@ export class Dashboard2Component {
 		this.jsonp.request(encodeURI(url))
 		.subscribe(response => {
 			var res =response['_body'].order_id;
-			console.log((res));
+			// console.log((res));
 		});
 	}
 
@@ -120,26 +120,31 @@ export class Dashboard2Component {
 		let endDate = moment(new Date());
 		// let timeConsumed = endDate.diff(moment(room.startDate), 'hours');
 		let duration = moment.duration(endDate.diff(startDate));
-		let hours = parseInt(duration.minutes()) / 60;
+		let hours = parseInt(duration.asMinutes()) / 60;
 
 		let startDateFormated = moment(startDate).format("D/MM/YYYY, h:mm:ss a");
 		let endDateFormatted = moment(endDate).format("D/MM/YYYY, h:mm:ss a");
 
 		console.log(startDate);
 		console.log(endDate);
+		console.log(duration.hours());
 		console.log(duration.minutes());
+		console.log(duration.asMinutes());
 		console.log(hours);
-		console.log(startDateFormated);
-		console.log(endDateFormatted);
+		// console.log(startDateFormated);
+		// console.log(endDateFormatted);
 
-		room.state = 2;
-		localStorage.setItem(roomStr, JSON.stringify(room));
-		for(var i=0;i<this.rooms.length;i++) {
-			if(this.rooms[i].id == room.id) {
-				this.rooms[i] = room;
-				let newOrderID = this.sendRoomData(hours, startDateFormated, endDateFormatted, room.id);
-				window.open("http://9.9.9.20:8999/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=232", "_blank");
+		if (room.state = 1
+		) {
+			room.state = 2;
+			localStorage.setItem(roomStr, JSON.stringify(room));
+			for(var i=0;i<this.rooms.length;i++) {
+				if(this.rooms[i].id == room.id) {
+					this.rooms[i] = room;
+					let newOrderID = this.sendRoomData(hours, startDateFormated, endDateFormatted, room.id);
+					window.open("http://9.9.9.20:8999/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=232", "_blank");
 
+				}
 			}
 		}
 	}
