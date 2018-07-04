@@ -26,6 +26,8 @@ function recibir($db) {
 
   $data =  $rm_timestamp_unix . ',' . $rm_puerto_a . ',' . $rm_puerto_c . ',' . $rm_puerto_f . ',' . $rm_puerto_k;
 
+  print_r($_REQUEST);
+
   $rm_puerto_a_bin = sprintf( "%08d", decbin($rm_puerto_a));
   $rm_puerto_c_bin = sprintf( "%08d", decbin($rm_puerto_c));
   $rm_puerto_f_bin = sprintf( "%08d", decbin($rm_puerto_f));
@@ -119,8 +121,6 @@ function recibir($db) {
       '$logs'
     ) RETURNING id;
     ";
-
-
 
     // file_put_contents($file, $sql, FILE_APPEND | LOCK_EX);
     // file_put_contents($file, $_REQUEST[], FILE_APPEND | LOCK_EX);
