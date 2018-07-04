@@ -129,7 +129,7 @@ function recibir($db) {
     if(!$db){
       file_put_contents($file, "Error : Unable to open database \n" , FILE_APPEND | LOCK_EX);
     } else {
-      // $query = pg_query($db, $sql);
+      $query = pg_query($db, $sql);
       if(!$query){
         file_put_contents($file, pg_last_error($db) , FILE_APPEND | LOCK_EX);
         // echo "Error".pg_last_error($db);
