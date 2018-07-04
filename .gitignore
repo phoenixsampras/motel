@@ -2,3 +2,4 @@ node_modules
 *.pyc
 original
 /backend/rmDbConfig.php
+prototype
