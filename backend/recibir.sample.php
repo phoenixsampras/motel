@@ -24,9 +24,9 @@ function recibir($db) {
   $rm_puerto_f =   $_REQUEST["puerto_f"];
   $rm_puerto_k =   $_REQUEST["puerto_k"];
 
-  $data =  $rm_timestamp_unix . ',' . $rm_puerto_a . ',' . $rm_puerto_c . ',' . $rm_puerto_f . ',' . $rm_puerto_k;
-
   print_r($_REQUEST);
+  $data =  $rm_timestamp_unix . ',' . $rm_puerto_a . ',' . $rm_puerto_c . ',' . $rm_puerto_f . ',' . $rm_puerto_k;
+  echo $data;
 
   $rm_puerto_a_bin = sprintf( "%08d", decbin($rm_puerto_a));
   $rm_puerto_c_bin = sprintf( "%08d", decbin($rm_puerto_c));
@@ -124,6 +124,7 @@ function recibir($db) {
 
     // file_put_contents($file, $sql, FILE_APPEND | LOCK_EX);
     // file_put_contents($file, $_REQUEST[], FILE_APPEND | LOCK_EX);
+    echo $sql;
 
     if(!$db){
       file_put_contents($file, "Error : Unable to open database \n" , FILE_APPEND | LOCK_EX);
