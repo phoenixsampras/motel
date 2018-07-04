@@ -1,6 +1,6 @@
 <?php
 header("Content-Type: text/javascript");
-error_reporting(0);
+error_reporting(E_ALL);
 require_once('rmDbConfig.php');
 // date_default_timezone_set('America/La_Paz');
 
@@ -18,11 +18,11 @@ switch ($_REQUEST["task"]) {
 
 function recibir($db) {
   echo "recibir";
-  $rm_timestamp_unix =   $_POST["tiempo_unix"];
-  $rm_puerto_a =   $_POST["puerto_a"];
-  $rm_puerto_c =   $_POST["puerto_c"];
-  $rm_puerto_f =   $_POST["puerto_f"];
-  $rm_puerto_k =   $_POST["puerto_k"];
+  $rm_timestamp_unix =   $_REQUEST["tiempo_unix"];
+  $rm_puerto_a =   $_REQUEST["puerto_a"];
+  $rm_puerto_c =   $_REQUEST["puerto_c"];
+  $rm_puerto_f =   $_REQUEST["puerto_f"];
+  $rm_puerto_k =   $_REQUEST["puerto_k"];
 
   $data =  $rm_timestamp_unix . ',' . $rm_puerto_a . ',' . $rm_puerto_c . ',' . $rm_puerto_f . ',' . $rm_puerto_k;
 
@@ -128,7 +128,7 @@ function recibir($db) {
     if(!$db){
       file_put_contents($file, "Error : Unable to open database \n" , FILE_APPEND | LOCK_EX);
     } else {
-      $query = pg_query($db, $sql);
+      // $query = pg_query($db, $sql);
       if(!$query){
         file_put_contents($file, pg_last_error($db) , FILE_APPEND | LOCK_EX);
         // echo "Error".pg_last_error($db);
