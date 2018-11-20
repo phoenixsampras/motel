@@ -145,7 +145,9 @@ export class Dashboard2Component {
 				if(this.rooms[i].id == room.id) {
 					this.rooms[i] = room;
 					let newOrderID = this.sendRoomData(hours, startDateFormated, endDateFormatted, room.id);
-					window.open("http://10.0.0.200:7501/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=228", "_blank");
+					setTimeout(function(){
+						window.open("http://10.0.0.200:7501/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=228", "_blank");
+					 },2000);//n
 					// http://10.0.0.200:7501/web?#id=1&view_type=form&model=sale.order&menu_id=169&action=228
 
 				}
