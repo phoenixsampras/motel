@@ -8,12 +8,84 @@ require_once('rmDbConfig.php');
 switch ($_REQUEST["task"]) {
 
   case 'verLecturas':
-    // rmTipoCliente($db);
+    verLecturas($db);
   break;
 
   default:
     recibir($db);
 
+}
+
+function verLecturas() {
+  try {
+    $sql = "
+    SELECT 
+      rm_timestamp,
+      rm_puerto_a,
+      rm_puerto_c,
+      rm_puerto_f,
+      rm_puerto_k,
+      rm_puerta1,
+      rm_puerta2,
+      rm_puerta3,
+      rm_puerta4,
+      rm_puerta5,
+      rm_puerta6,
+      rm_puerta7,
+      rm_puerta8,
+      rm_puerta9,
+      rm_puerta10,
+      rm_puerta11,
+      rm_puerta12,
+      rm_puerta13,
+      rm_puerta14,
+      rm_puerta15,
+      rm_puerta16,
+      rm_puerta17,
+      rm_puerta18,
+      rm_puerta19,
+      rm_puerta20,
+      rm_puerta21,
+      rm_puerta22,
+      rm_puerta23,
+      rm_puerta24,
+      rm_puerta25,
+      rm_puerta26,
+      rm_log
+    FROM
+    rm_arduino 
+    ORDER by id desc
+    LIMIT 100;
+    ";
+
+    // file_put_contents($file, $sql, FILE_APPEND | LOCK_EX);
+    // file_put_contents($file, $_REQUEST[], FILE_APPEND | LOCK_EX);
+    //echo $sql;
+
+    if(!$db){
+      file_put_contents($file, "Error : Unable to open database \n" , FILE_APPEND | LOCK_EX);
+    } else {
+      $query = pg_query($db, $sql);
+      if(!$query){
+        file_put_contents($file, pg_last_error($db) , FILE_APPEND | LOCK_EX);
+        // echo "Error".pg_last_error($db);
+        exit;
+      } else {
+        $resultado = pg_fetch_all($query);
+        echo $_GET['callback'].'({"verLogs": ' . json_encode($resultado) . '})';
+      }
+    }
+
+
+
+
+    // echo $_GET['callback'].'({"rmDatosIncsertados": ' . json_encode($resultado) . '})';
+    pg_close($db);
+
+  } catch(PDOException $e) {
+      echo $_GET['callback'].'({"error":{"text":'. pg_last_error($db) .'}})';
+      exit;
+  }  
 }
 
 function recibir($db) {

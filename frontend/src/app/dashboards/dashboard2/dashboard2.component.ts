@@ -19,7 +19,7 @@ export class Dashboard2Component {
 	}
 
 	loadRooms() {
-		this.jsonp.request("https://cloud.movilcrm.com/motel/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
+		this.jsonp.request("http://10.0.0.200/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
 		.subscribe(response => {
 			var res = response['_body'].verPuertas;
 			//console.log(Object.keys(res));
@@ -64,7 +64,7 @@ export class Dashboard2Component {
 	}
 
 	sendRoomData(hours, startDateFormated, endDateFormatted, roomID) {
-		let url = "http://9.9.9.20/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated + "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
+		let url = "http://10.0.0.200/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated + "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
 		this.jsonp.request(encodeURI(url))
 		.subscribe(response => {
 			var res =response['_body'].order_id;
@@ -114,13 +114,16 @@ export class Dashboard2Component {
 
 	checkoutButton(id) {
 		let roomStr = "Room-" + id;
+		let hours = 0;
 		let room = JSON.parse(localStorage.getItem(roomStr));
 		console.log(room);
 		let startDate = room.startDate;
 		let endDate = moment(new Date());
 		// let timeConsumed = endDate.diff(moment(room.startDate), 'hours');
 		let duration = moment.duration(endDate.diff(startDate));
-		let hours = parseInt(duration.asMinutes()) / 60;
+		// alert((duration.asMinutes()));
+		hours = duration.asMinutes() / 60;
+		hours = 1;
 
 		let startDateFormated = moment(startDate).format("D/MM/YYYY, h:mm:ss a");
 		let endDateFormatted = moment(endDate).format("D/MM/YYYY, h:mm:ss a");
@@ -142,7 +145,8 @@ export class Dashboard2Component {
 				if(this.rooms[i].id == room.id) {
 					this.rooms[i] = room;
 					let newOrderID = this.sendRoomData(hours, startDateFormated, endDateFormatted, room.id);
-					window.open("http://9.9.9.20:8999/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=232", "_blank");
+					window.open("http://10.0.0.200:7501/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=228", "_blank");
+					// http://10.0.0.200:7501/web?#id=1&view_type=form&model=sale.order&menu_id=169&action=228
 
 				}
 			}

@@ -144,7 +144,7 @@ function verLogs($db) {
 
 function rmRegistrarPedidoMasivo($conex, $user_id = '') {
 
-  $default_cliente = 45;
+  $default_cliente = 8;
   $default_usuario = 1;
 
 	$url = $conex['url'];
