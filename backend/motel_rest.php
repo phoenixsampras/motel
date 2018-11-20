@@ -76,7 +76,8 @@ function verPuertas($db) {
       rm_puerta23,
       rm_puerta24,
       rm_puerta25,
-      rm_puerta26
+      rm_puerta26,
+      id
       FROM rm_arduino
       ORDER BY ID DESC LIMIT 1
     ";
