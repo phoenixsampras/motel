@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import { Room } from '../../room';
 import * as moment from 'moment';
+import { resolve } from 'q';
 
 @Component({
 	templateUrl: './dashboard2.component.html',
@@ -12,6 +13,7 @@ import * as moment from 'moment';
 })
 export class Dashboard2Component {
 	rooms:any = [];
+	newOrderID:string = '0';
 	timeout:string = "1";
 	timeoutArray = ['1', '5', '60'];
 	constructor(public jsonp:Jsonp) {
@@ -62,14 +64,16 @@ export class Dashboard2Component {
 		});
 
 	}
-
+	
 	sendRoomData(hours, startDateFormated, endDateFormatted, roomID) {
 		let url = "http://10.0.0.200/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated + "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
 		this.jsonp.request(encodeURI(url))
 		.subscribe(response => {
-			var res =response['_body'].order_id;
-			// console.log((res));
-		});
+			alert(JSON.stringify(response['_body'].order_id));
+			this.newOrderID = JSON.stringify(response['_body'].order_id);
+			// return res.json().request.map(item => {
+				// return resolve(response['_body'].order_id);
+		})
 	}
 
 	occupyButton(id) {
@@ -135,7 +139,7 @@ export class Dashboard2Component {
 		console.log(duration.asMinutes());
 		console.log(hours);
 		// console.log(startDateFormated);
-		// console.log(endDateFormatted);
+		// console.log(endDateFormatted); 
 
 		if (room.state = 1
 		) {
@@ -144,10 +148,21 @@ export class Dashboard2Component {
 			for(var i=0;i<this.rooms.length;i++) {
 				if(this.rooms[i].id == room.id) {
 					this.rooms[i] = room;
-					let newOrderID = this.sendRoomData(hours, startDateFormated, endDateFormatted, room.id);
-					setTimeout(function(){
+					// this.sendRoomData(hours, startDateFormated, endDateFormatted, room.id);
+            		// let newOrderID = this.newOrderID;
+            		// alert(newOrderID);
+					// alert(this.newOrderID);
+					let roomID = room.id;
+					let url = "http://10.0.0.200/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated + "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
+					this.jsonp.request(encodeURI(url))
+					.subscribe(response => {
+						// alert(JSON.stringify(response['_body'].order_id));
+						let newOrderID = JSON.stringify(response['_body'].order_id);
+						// return res.json().request.map(item => {
+							// return resolve(response['_body'].order_id);
 						window.open("http://10.0.0.200:7501/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=228", "_blank");
-					 },2000);//n
+					})
+
 					// http://10.0.0.200:7501/web?#id=1&view_type=form&model=sale.order&menu_id=169&action=228
 
 				}

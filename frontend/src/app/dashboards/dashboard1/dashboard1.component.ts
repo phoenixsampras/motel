@@ -21,7 +21,7 @@ export class Dashboard1Component {
 	
 	
 	loadRooms() {
-		this.jsonp.request("http://10.0.0.200/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
+		this.jsonp.request("http://192.168.255.122/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
 		.subscribe(response => {
 			var res = response['_body'].verPuertas;
 			//console.log(Object.keys(res));

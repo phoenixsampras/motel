@@ -226,8 +226,9 @@ function rmRegistrarLineaPedidoEmbeded($conex, $user_id, $products, $order_id)
 	$uid = login($conex);
 	$models = ripcord::client("$url/xmlrpc/2/object");
 	// foreach($products as $producto) {
-	$rmProduct_id = $_REQUEST['product'];
-	$rmQuantity = $_REQUEST['quantity'];
+  $rmProduct_id = $_REQUEST['product'];
+  $rmQuantity = round(abs(strtotime( $_REQUEST["startDateFormated"]) - strtotime($_REQUEST["endDateFormated"])) / 60,2);
+	// $rmQuantity = $_REQUEST['quantity'];
 	$order_id = $order_id;
 	$name = 'snu snu 2 horitas';
 	$price_unit = $_REQUEST['price'];
