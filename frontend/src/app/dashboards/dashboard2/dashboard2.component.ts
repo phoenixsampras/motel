@@ -24,7 +24,7 @@ export class Dashboard2Component {
 
 	loadRooms() {
 		//this.jsonp.request("http://10.0.0.200/motel/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
-		this.jsonp.request(this.urlbackend+"/motel/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
+		this.jsonp.request(this.urlbackend+"/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
 		.subscribe(response => {
 			var res = response['_body'].verPuertas;
 			//console.log(Object.keys(res));
@@ -70,7 +70,7 @@ export class Dashboard2Component {
 	
 	sendRoomData(hours, startDateFormated, endDateFormatted, roomID) {
 		//let url = "http://10.0.0.200/motel/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated + "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
-		let url = this.urlbackend+"/motel/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated + "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
+		let url = this.urlbackend+"/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated + "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
 		this.jsonp.request(encodeURI(url))
 		.subscribe(response => {
 			alert(JSON.stringify(response['_body'].order_id));
@@ -159,7 +159,7 @@ export class Dashboard2Component {
             		// alert(newOrderID);
 					// alert(this.newOrderID);					
 					let roomID = room.id;
-					let url = this.urlbackend+"/motel/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated +"&startDateFormatedBD=" + startDateFormatedBD+ "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
+					let url = this.urlbackend+"/backend/motel_rest.php?task=checkout&startDateFormated=" + startDateFormated +"&startDateFormatedBD=" + startDateFormatedBD+ "&endDateFormatted=" + endDateFormatted + "&product=1&roomID=" +roomID+ "&quantity=" + hours + "&price=3&callback=JSONP_CALLBACK";
 					this.jsonp.request(encodeURI(url))
 					.subscribe(response => {
 						// alert(JSON.stringify(response['_body'].order_id));
