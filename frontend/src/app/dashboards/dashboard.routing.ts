@@ -12,14 +12,14 @@ export const DashboardRoutes: Routes = [
       path: 'dashboard1',
       component: Dashboard1Component,
       data: {
-        title: 'Modern Dashboard',
+        title: 'Motel Rapidin',
         urls: [{title: 'Dashboard',url: '/dashboard'},{title: 'Modern Dashboard'}]
       }
     }, {
       path: 'dashboard2',
       component: Dashboard2Component,
       data: {
-        title: 'Classic Dashboard',
+        title: 'Motel Rapidin',
         urls: [{title: 'Dashboard',url: '/dashboard'},{title: 'Classic Dashboard'}]
       }
     }, {

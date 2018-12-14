@@ -166,6 +166,9 @@ function rmRegistrarPedidoMasivo($conex, $user_id = '') {
 	// $rmCustomer = VerificarCliente($conex, $pedido->customerObj);
 
 	$rmDateOrder = date('Y-m-d H:i:s');
+  $asDateStart = $_REQUEST["startDateFormated"];
+  $asDateStartBD = $_REQUEST["startDateFormatedBD"];
+  $asDateEnd = $_REQUEST["endDateFormatted"];
   $rmNote = 'Hora de Ingreso: ' . $_REQUEST["startDateFormated"] . "\n";
   $rmNote .= 'Hora de Salida: ' . $_REQUEST["endDateFormatted"] . "\n";
 	$rmNote .= 'Habitacion Nro: ' . $_REQUEST["roomID"];
@@ -178,6 +181,8 @@ function rmRegistrarPedidoMasivo($conex, $user_id = '') {
 			'user_id' => $default_usuario,
 			'partner_id' => $default_cliente,
 			'date_order' => $rmDateOrder,
+      'as_hora_inicio' => $asDateStartBD,
+      'as_hora_final' => $rmDateOrder,
 			'note' => $rmNote,
 			// 'origin' => $numberOrder,
       // 'user_id' => $rmUserId,
@@ -227,7 +232,7 @@ function rmRegistrarLineaPedidoEmbeded($conex, $user_id, $products, $order_id)
 	$models = ripcord::client("$url/xmlrpc/2/object");
 	// foreach($products as $producto) {
   $rmProduct_id = $_REQUEST['product'];
-  $rmQuantity = round(abs(strtotime( $_REQUEST["startDateFormated"]) - strtotime($_REQUEST["endDateFormated"])) / 60,2);
+  //$rmQuantity = round(abs(strtotime( $_REQUEST["startDateFormated"]) - strtotime($_REQUEST["endDateFormated"])) / 60,2);
 	// $rmQuantity = $_REQUEST['quantity'];
 	$order_id = $order_id;
 	$name = 'snu snu 2 horitas';
@@ -238,7 +243,7 @@ function rmRegistrarLineaPedidoEmbeded($conex, $user_id, $products, $order_id)
 			'product_id' => 2,
 			'name' => 'Snu Snu 2 horitas',
 			// 'price_unit' => $price_unit,
-			'product_uom_qty' => $rmQuantity,
+			//'product_uom_qty' => $rmQuantity,
 			'product_uom' => 1,
 			'route_id' => 3
 

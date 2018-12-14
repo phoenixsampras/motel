@@ -8,6 +8,8 @@ import 'rxjs/add/operator/map';
     styleUrls: ['./dashboard1.component.css']
 })
 export class Dashboard1Component {
+	//urlbackend:string = "http://9.9.9.20";
+	urlbackend:string = "http://9.9.9.20";
 	rooms:any = [];
 	timeout:string = "1";
 	timeoutArray = ['1', '5', '60'];
@@ -21,7 +23,8 @@ export class Dashboard1Component {
 	
 	
 	loadRooms() {
-		this.jsonp.request("http://10.0.0.200/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
+		//this.jsonp.request("http://10.0.0.200/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
+		this.jsonp.request(this.urlbackend+"/motel/backend/motel_rest.php?task=verPuertas&callback=JSONP_CALLBACK")
 		.subscribe(response => {
 			var res = response['_body'].verPuertas;
 			//console.log(Object.keys(res));
