@@ -8,8 +8,8 @@ import 'rxjs/add/operator/map';
     styleUrls: ['./dashboard1.component.css']
 })
 export class Dashboard1Component {
+	urlbackend:string =  "http://10.0.0.200";
 	//urlbackend:string = "http://9.9.9.20";
-	urlbackend:string = "http://9.9.9.20";
 	rooms:any = [];
 	timeout:string = "1";
 	timeoutArray = ['1', '5', '60'];
