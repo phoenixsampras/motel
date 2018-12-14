@@ -8,9 +8,12 @@ header("Content-Type: text/javascript");
 header('Access-Control-Allow-Origin: *');
 error_reporting(1);
 
-require_once ('rmDbConfig.php');
-require_once ('rmOdooConfig.php');
+require_once ('rmDbConfig.sample.php');
+require_once ('rmOdooConfig.sample.php');
 require_once ('xmlrpc_lib/ripcord.php');
+// require_once ('rmDbConfig.php');
+// require_once ('rmOdooConfig.php');
+// require_once ('xmlrpc_lib/ripcord.php');
 
 // if (isset($_SERVER['HTTP_ORIGIN'])) {
 //   header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
