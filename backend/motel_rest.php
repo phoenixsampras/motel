@@ -2,7 +2,7 @@
 
 // Expected URL
 // http://9.9.9.20/backend/motel_rest.php?task=checkout&product=1&quantity=2&price=3
-//
+// corregido
 
 header("Content-Type: text/javascript");
 header('Access-Control-Allow-Origin: *');
