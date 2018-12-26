@@ -166,7 +166,9 @@ export class Dashboard2Component {
 						let newOrderID = JSON.stringify(response['_body'].order_id);
 						// return res.json().request.map(item => {
 							// return resolve(response['_body'].order_id);
-						window.open(this.urlbackend+":9000/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=228", "_blank");
+						window.open(this.urlbackend+":7501/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=228", "_blank");
+						//PARA MANEJO NE DESARROLLO
+						//window.open(this.urlbackend+":9000/web?#id=" + newOrderID + "&view_type=form&model=sale.order&action=228", "_blank");
 					})
 
 					// http://10.0.0.200:7501/web?#id=1&view_type=form&model=sale.order&menu_id=169&action=228
