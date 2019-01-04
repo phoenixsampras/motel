@@ -12,6 +12,11 @@ require_once ('rmDbConfig.php');
 require_once ('rmOdooConfig.php');
 require_once ('xmlrpc_lib/ripcord.php');
 
+//PARA TRABAJAR EN LOCAL
+//require_once ('rmDbConfig.sample.php');
+//require_once ('rmOdooConfig.sample.php');
+//require_once ('xmlrpc_lib/ripcord.php');
+
 // if (isset($_SERVER['HTTP_ORIGIN'])) {
 //   header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
 //   header('Access-Control-Allow-Credentials: true');
@@ -76,8 +81,7 @@ function verPuertas($db) {
       rm_puerta23,
       rm_puerta24,
       rm_puerta25,
-      rm_puerta26,
-      id
+      rm_puerta26
       FROM rm_arduino
       ORDER BY ID DESC LIMIT 1
     ";
