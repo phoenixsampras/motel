@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import { Room } from '../../room';
 import * as moment from 'moment';
 import { resolve } from 'q';
+import { r } from '@angular/core/src/render3';
 
 @Component({
 	templateUrl: './dashboard2.component.html',
@@ -16,8 +17,9 @@ export class Dashboard2Component {
 	//urlbackend:string = "http://9.9.9.20";
 	rooms:any = [];
 	newOrderID:string = '0';
+	//timeout:string = "1";
 	timeout:string = "1";
-	timeoutArray = ['1', '5', '60'];
+	timeoutArray = ['1', '5', '60'];1
 	constructor(public jsonp:Jsonp) {
 		this.loadRooms();
 	}
@@ -36,7 +38,7 @@ export class Dashboard2Component {
 				//this.rooms.push({'id' : keys[i], 'status' : res[keys[i]]});
 
 				let room = localStorage.getItem(roomStr);
-				// console.log(roomStr +  ' -- ' + room);
+				//console.log(roomStr +  ' -- ' + room);
 				if(!room) {
 					let r = new Room;
 					r.id = parseInt(keys[i],10);
@@ -44,10 +46,25 @@ export class Dashboard2Component {
 					r.door = res[keys[i]];
 					this.rooms.push(r);
 					localStorage.setItem(roomStr, JSON.stringify(r));
-
+					
 				} else {
-
+					
 					var _r = JSON.parse(localStorage.getItem(roomStr));
+					//console.log('cuartos: '+res[keys[i]]);
+
+					if(_r.state == 2){
+						//console.log('LIMPIEZA: '+_r.startClean);
+						let startClean = _r.startClean;
+						let now = moment(new Date());
+						let duration = moment.duration(now.diff(startClean));
+						//VALOR EN MINUTOS PARA CAMBIAR ESTADO DE LIMPIEZA A HABILITADO
+						if (duration.asMinutes() > 17){
+							if (res[keys[i]] == "t"){
+								_r.state = 0;								
+								console.log('DURACION: '+duration.asMinutes());
+							}							
+						}
+					}
 					if(_r.state == 0) {
 						_r.state = res[keys[i]] == "f" ? 1 : 0;
 
@@ -124,6 +141,8 @@ export class Dashboard2Component {
 		let roomStr = "Room-" + id;
 		let hours = 0;
 		let room = JSON.parse(localStorage.getItem(roomStr));
+		let rightNow = moment().format();
+		room.startClean = rightNow;
 		console.log(room);
 		let startDate = room.startDate;
 		let endDate = moment(new Date());
@@ -134,7 +153,7 @@ export class Dashboard2Component {
 		hours = 1;
 
 		let startDateFormated = moment(startDate).format("D/MM/YYYY, h:mm:ss a");
-		let startDateFormatedBD = moment(startDate).format("YYYY/MM/D hh:mm:ss");
+		let startDateFormatedBD = moment(startDate).format("YYYY/MM/D HH:mm:ss");
 		let endDateFormatted = moment(endDate).format("D/MM/YYYY, h:mm:ss a");
 
 		console.log(startDate);
