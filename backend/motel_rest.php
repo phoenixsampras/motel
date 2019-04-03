@@ -3,7 +3,6 @@
 // Expected URL
 // http://9.9.9.20/backend/motel_rest.php?task=checkout&product=1&quantity=2&price=3
 // corregido
-
 header("Content-Type: text/javascript");
 header('Access-Control-Allow-Origin: *');
 error_reporting(1);
@@ -155,7 +154,8 @@ function rmRegistrarPedidoMasivo($conex, $user_id = '') {
 	$url = $conex['url'];
 	$db = $conex['db'];
 	$username = $conex['username'];
-	$password = $conex['password'];
+  $password = $conex['password'];
+  //$ = str_replace("/","-",$_GET['startDateFormatedBD']);
 	// $postdata = file_get_contents("php://input");
 	// $jsondata = json_decode($postdata);
 
@@ -171,7 +171,7 @@ function rmRegistrarPedidoMasivo($conex, $user_id = '') {
 
 	$rmDateOrder = date('Y-m-d H:i:s');
   $asDateStart = $_REQUEST["startDateFormated"];
-  $asDateStartBD = $_REQUEST["startDateFormatedBD"];
+  $asDateStartBD = str_replace("/","-",$_REQUEST["startDateFormatedBD"]);
   $asDateEnd = $_REQUEST["endDateFormatted"];
   $rmNote = 'Hora de Ingreso: ' . $_REQUEST["startDateFormated"] . "\n";
   $rmNote .= 'Hora de Salida: ' . $_REQUEST["endDateFormatted"] . "\n";
